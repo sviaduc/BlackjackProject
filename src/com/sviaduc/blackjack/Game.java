@@ -11,12 +11,14 @@ public class Game {
 	}
 	public void run() {
 		Deck deck = initializeDeck();
-//		for (Card c: deck.getCard()) {
-//			System.out.println(c.getRank() + " of " + c.getSuit() + " " + c.getRank().getValue());
-//		}
+		playerTurn(deck);
+	
+		}
+	
+	private void playerTurn(Deck deck) {
 		player.getHand().addCard(deck.dealCard());
 		player.getHand().addCard(deck.dealCard());
-		System.out.println(deck.getCard().size());
+		System.out.println("Card counter: " + deck.getCard().size());
 		int playerHandValue = 0;
 		for (Card c : player.getHand().getCards()) {
 		System.out.println(c);	
@@ -25,28 +27,48 @@ public class Game {
 		}
 		System.out.println("Player's Hand: " + playerHandValue);
 		
+		if(playerHandValue == 21) {
+			System.out.println("Blackjack!!");
+			dealerTurn(deck);
+		}
+		
+		while(playerHandValue < 21){
 		Scanner kb = new Scanner(System.in);
-		if(playerHandValue < 21) {
 		System.out.println("Do you want to: ");
 		System.out.println("(1)Hit");
 		System.out.println("(2)Stand");
 		int choice = kb.nextInt();
 		
 		switch(choice) {
-		case(1):
-		break;
-		case(2):
-		break;
+		case 1:
+		player.getHand().addCard(deck.dealCard());
+		System.out.println("Card counter: " + deck.getCard().size());
+		int playerHandValue1 = 0;
+		for (Card c : player.getHand().getCards()) {
+		System.out.println(c);	
+		playerHandValue1 = playerHandValue1 + c.getRank().getValue();
+		playerHandValue = playerHandValue + playerHandValue1;
+		System.out.println(playerHandValue);
 		}
+			break;
+		case 2:
+			dealerTurn(deck);
+			break;
+			
 		}
 		
+		}
+		if(playerHandValue > 21) {
+			System.out.println("You Busted!");
+		}
 		
+	}	
 		
-		
-		//dealers draw*******************
+	private void dealerTurn(Deck deck) {
+		System.out.println("*********Dealers Hand*********");
 		dealer.getHand().addCard(deck.dealCard());
 		dealer.getHand().addCard(deck.dealCard());
-		System.out.println(deck.getCard().size());
+		System.out.println("Card counter: " + deck.getCard().size());
 		int dealerHandValue = 0;
 		for (Card c : dealer.getHand().getCards()) {
 			System.out.println(c);	
@@ -58,16 +80,16 @@ public class Game {
 		while(dealerHandValue <= 16) {
 			dealerHandValue = 0;
 			dealer.getHand().addCard(deck.dealCard());
-			System.out.println(deck.getCard().size());
+			System.out.println("Card counter: " + deck.getCard().size());
 			for (Card c : dealer.getHand().getCards()) {
 				System.out.println(c);	
 				dealerHandValue = dealerHandValue + c.getRank().getValue();
 			}
 			System.out.println("Dealer's Hand: " + dealerHandValue);
 		}
-	
-			
+		
 	}
+
 	public Deck initializeDeck() {
 		Deck deck = new Deck();
 		
