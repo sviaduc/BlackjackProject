@@ -16,7 +16,7 @@ public class Card {
 	public void setRank(Rank rank) {
 		this.rank = rank;
 	}
-	public Card(Suit suit, Rank rank) {
+	public Card(Rank rank ,Suit suit) {
 		super();
 		this.suit = suit;
 		this.rank = rank;
@@ -25,11 +25,10 @@ public class Card {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Card [suit=");
-		builder.append(suit);
-		builder.append(", rank=");
+		builder.append("Card: ");
 		builder.append(rank);
-		builder.append("]");
+		builder.append(" of ");
+		builder.append(suit);
 		return builder.toString();
 	}
 	
