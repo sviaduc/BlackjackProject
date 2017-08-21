@@ -30,10 +30,6 @@ public class Game {
 			System.out.println(p);	
 			playerHandValue = playerHandValue + p.getRank().getValue();
 		}
-//		for (int i = 0; i <  dealer.getHand().getCards().size(); i++) {
-//			System.out.println("Dealers " + dealer.getHand().getCards());
-//			dealerHandValue = dealerHandValue + dealer.hand.getCards().get(1)  .getRank().getValue();
-//		}
 		for( Card d : dealer.getHand().getCards()) {
 			//System.out.println("Dealers " + d);
 			dealerHandValue = dealerHandValue + d.getRank().getValue();
@@ -90,6 +86,9 @@ public class Game {
 			}
 		}
 		if(playerHandValue > 21) {
+			if(player.getHand().getCards().equals(Rank.ACE)) {
+				playerHandValue = playerHandValue - 10;
+			}
 			checkWin(dealerHandValue, playerHandValue);
 		}
 	}	
