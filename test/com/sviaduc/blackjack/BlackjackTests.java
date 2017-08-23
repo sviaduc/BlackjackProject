@@ -13,6 +13,7 @@ import org.junit.Test;
 public class BlackjackTests {
 	Deck deck;
     Player p;
+    Dealer d;
 
     @Before
     public void setUp() throws Exception {
@@ -21,7 +22,7 @@ public class BlackjackTests {
 
         for (Suit s : Suit.values()) { // iterates through Suit enums
             for (Rank r : Rank.values()) { // gives values to cards
-                Card c = new Card(s, r); // calls Card constructor to create Card obj
+                Card c = new Card(r, s); // calls Card constructor to create Card obj
                 deck.addCard(c); // add newly created cards to deck
             }
         }
@@ -35,7 +36,7 @@ public class BlackjackTests {
     }
 
     @Test
-    public void test_deal_p_a_card_and_it_should_get_removed() {
+    public void test_deal_player_a_card_and_it_should_get_removed() {
         assertEquals(52, deck.getCard().size());
         assertNull(p.getHand().getCards()); // null because there are no cards in the hand
         p.getHand().addCard(deck.dealCard());
@@ -44,16 +45,29 @@ public class BlackjackTests {
     }
     
 //    @Test
-//    public void test() {
+//    public int test_player_check_for_aces() {
 //        p.getHand().addCard(new Card(Rank.ACE, Suit.CLUBS));
-//        p.getHand().addCard(new Card(Rank.ACE, Suit.CLUBS));
+//        //p.getHand().addCard(new Card(Rank.ACE, Suit.CLUBS));
 //        p.getHand().addCard(new Card(Rank.TEN, Suit.CLUBS));
 //        p.getHand().addCard(new Card(Rank.FIVE, Suit.CLUBS));
 //        
-//        GameApp app = new GameApp();
-//        int i = app.checkForAces(p);
+//        Game app = new Game();
+//        int i = app.playerTurn(deck);
 //        
-//        assertEquals(17, i);
+//        assertEquals(16, i);
+//    }
+//    
+//    @Test
+//    public void test_dealer_check_for_aces() {
+//    	d.getHand().addCard(new Card(Rank.ACE, Suit.CLUBS));
+//    //	d.getHand().addCard(new Card(Rank.ACE, Suit.CLUBS));
+//    	d.getHand().addCard(new Card(Rank.TEN, Suit.CLUBS));
+//    //	d.getHand().addCard(new Card(Rank.FIVE, Suit.CLUBS));
+//    	
+//    	Game app = new Game();
+//    	int i = app.dealerTurn(deck, d.getHand().getCards().get(0) && d.getHand().getCards().get(1));
+//    	
+//    	assertEquals(17, i);
 //    }
 
 }

@@ -9,10 +9,8 @@ public class Game {
 		Game game = new Game();
 		game.run();
 	}
+	
 	public void run() {
-		//Game of blackjack
-//		Boolean playAgain = true;
-//		while(
 		Deck deck = initializeDeck();
 		playerTurn(deck);
 		}
@@ -28,7 +26,7 @@ public class Game {
 		int dealerHandValue = 0;
 		for (Card p : player.getHand().getCards()) {
 			System.out.println(p);	
-			playerHandValue = playerHandValue + p.getRank().getValue();
+			playerHandValue = playerHandValue + p.getRank().getValue();	
 		}
 		for( Card d : dealer.getHand().getCards()) {
 			//System.out.println("Dealers " + d);
@@ -63,13 +61,18 @@ public class Game {
 				player.getHand().addCard(deck.dealCard());
 				System.out.println("DECK COUNT: " + deck.getCard().size() + "\n");
 				int playerHandValue1 = 0;
-					for (Card c : player.getHand().getCards()) {
-					System.out.println(c);	
-					playerHandValue1 = playerHandValue1 + c.getRank().getValue();
+					for (Card p : player.getHand().getCards()) {
+					System.out.println(p);	
+					playerHandValue1 = playerHandValue1 + p.getRank().getValue();
+					if(p.getRank().equals(Rank.ACE)) {
+						playerHandValue1 = playerHandValue1 - 10;
+					} 
+					
 					System.out.println(playerHandValue1);
 					playerHandValue = playerHandValue1;
 						if(playerHandValue == 21) {
 							dealerTurn(deck, dealerHandValue);
+							kb.close();
 							checkWin(dealerHandValue, playerHandValue);
 						}
 					}
@@ -77,42 +80,40 @@ public class Game {
 					break;
 				case 2:
 					dealerHandValue = dealerTurn(deck, dealerHandValue);
+					kb.close();
 					checkWin(dealerHandValue, playerHandValue);
 					sLoop = false;
 					break;
 					
 				}
-			
 			}
 		}
 		if(playerHandValue > 21) {
-			if(player.getHand().getCards().equals(Rank.ACE)) {
-				playerHandValue = playerHandValue - 10;
-			}
 			checkWin(dealerHandValue, playerHandValue);
 		}
+		
 	}	
 		
 	
 	private int dealerTurn(Deck deck, int dealerHandValue) {
 		System.out.println("*********Dealers Hand*********");
-		//dealer.getHand().addCard(deck.dealCard());
 		System.out.println("DECK COUNT: " + deck.getCard().size() + "\n");
-		//int dealerHandValue = 0;
 		for (Card d : dealer.getHand().getCards()) {
 			System.out.println(d);	
-			//dealerHandValue = dealerHandValue + d.getRank().getValue();
-			
 		}
 		System.out.println("\n Dealer's Hand: " + dealerHandValue);
-		//if dealers hand is under 17, dealer will draw card
-		while(dealerHandValue <= 16) {
+
+		while(dealerHandValue < 17 || (dealerHandValue == 17 && dealer.getHand().getCards().size() == 2 &&
+				(dealer.getHand().getCards().get(0).getRank().equals(Rank.ACE) || dealer.getHand().getCards().get(1).getRank().equals(Rank.ACE)))) {
 			dealerHandValue = 0;
 			dealer.getHand().addCard(deck.dealCard());
 			System.out.println("DECK COUNT: " + deck.getCard().size() + "\n");
 			for (Card d : dealer.getHand().getCards()) {
-				System.out.println(d);	
 				dealerHandValue = dealerHandValue + d.getRank().getValue();
+				if(d.getRank().equals(Rank.ACE)) {
+					dealerHandValue = dealerHandValue - 10;
+				} 
+				System.out.println(d);
 			}
 	
 			System.out.println("\n Dealer's Hand: " + dealerHandValue);
@@ -123,23 +124,24 @@ public class Game {
 
 	private Boolean checkWin(int dealerHandValue, int playerHandValue) {
 		
-		if(dealerHandValue >21 && playerHandValue<=21) {
+		if(dealerHandValue > 21 && playerHandValue <= 21) {
 			System.out.println("\n Dealer busted!!");
 		}
 		else if(dealerHandValue <= 21 && playerHandValue>21) {
 			System.out.println("\n Player Busted!!");
 		}
-		else if(dealerHandValue>playerHandValue) {
+		else if(dealerHandValue > playerHandValue) {
 			System.out.println("\n Dealer wins!!");
 		}
-		else if(dealerHandValue<playerHandValue) {
+		else if(dealerHandValue < playerHandValue && playerHandValue <= 21) {
 			System.out.println("\n Player Wins!!");
 		}
-		else if (dealerHandValue==playerHandValue){
+		else if (dealerHandValue == playerHandValue){
 			System.out.println("\n Push...");
 		}
 		return true;
 	}
+	
 	public Deck initializeDeck() {
 		Deck deck = new Deck();
 		
@@ -151,7 +153,11 @@ public class Game {
 		}
 		deck.shuffleDeck();
 		return deck;
+		
 	}
+	
+	// break out into more methods
+	//add more unit tests
 	
 //	public int checkForAces(Player player) {
 //		
